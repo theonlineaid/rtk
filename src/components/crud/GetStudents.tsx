@@ -1,9 +1,16 @@
-import { useGetStudentsQuery, useLazyGetStudentsQuery } from '../../redux/services/student';
+import React from "react";
+import {
+  useDeleteStudentMutation,
+  useGetStudentsQuery,
+  useLazyGetStudentsQuery,
+} from "../../redux/services/student";
+import { Link } from "react-router-dom";
 
 type Props = {};
 
 export default function GetStudents({}: Props) {
   const { data: students, error, isError, isLoading } = useGetStudentsQuery();
+  const [deleteStudent] = useDeleteStudentMutation();
 
   // const handleClick = () => {
   //   fetchData();
@@ -21,13 +28,21 @@ export default function GetStudents({}: Props) {
       </button> */}
 
       {isLoading && <span>Loading ...</span>}
-      {isError && <span className="text-red-500 ml-2">Something went wrong</span>}
+      {isError && (
+        <span className="text-red-500 ml-2">Something went wrong</span>
+      )}
       {students && (
         <ul className="mt-4">
           {students?.map((student) => (
-            <li key={student.id} className="mb-2">
-              {student.studentName}
-            </li>
+            <React.Fragment key={student?.id}>
+              <li key={student.id} className="mb-2">
+                {student.studentName}
+              </li>
+              <button onClick={() => deleteStudent(student?.id)}>Delete</button>
+              <button>
+                <Link to={`/edit/${student?.id}`}>Edit</Link>
+              </button>
+            </React.Fragment>
           ))}
         </ul>
       )}
