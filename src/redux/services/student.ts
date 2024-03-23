@@ -18,7 +18,18 @@ export const studentApi = createApi({
         getStudents: builder.query<Students[], void>({
             query: () => '/students',
             providesTags: ['students'],
+            transformResponse: (response: Students[], meta, args: any) => {
+                // if (args === 2) {
+                return response.slice(0, 4);
+            },
         }),
+
+        // get single student 
+        getSingleStudent: builder.query<Students, void>({
+            query: (id) => `/students/${id}`,
+            providesTags: ['students'],
+        }),
+
         createStudent: builder.mutation<void, Students>({
             query: (students) => ({
                 url: '/students',
@@ -34,7 +45,16 @@ export const studentApi = createApi({
             }),
             invalidatesTags: ['students'],
         }),
+
+        updateStudent: builder.mutation<void, Students>({
+            query: ({ id, ...rest }) => ({
+                url: `/students/${id}`,
+                method: 'PUT',
+                body: rest,
+            }),
+            invalidatesTags: ['students'],
+        }),
     })
 })
 
-export const { useLazyGetStudentsQuery, useGetStudentsQuery, useCreateStudentMutation } = studentApi;
+export const { useLazyGetStudentsQuery, useGetStudentsQuery, useCreateStudentMutation, useDeleteStudentMutation, useUpdateStudentMutation, useGetSingleStudentQuery } = studentApi;
