@@ -18,10 +18,10 @@ export const studentApi = createApi({
         getStudents: builder.query<Students[], void>({
             query: () => '/students',
             providesTags: ['students'],
-            transformResponse: (response: Students[], meta, args: any) => {
-                // if (args === 2) {
-                return response.slice(0, 4);
-            },
+            // transformResponse: (response: Students[], meta, args: any) => {
+            //     // if (args === 2) {
+            //     return response.slice(0, 4);
+            // },
         }),
 
         // get single student 
